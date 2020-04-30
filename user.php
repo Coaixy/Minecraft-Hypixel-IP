@@ -4,6 +4,8 @@ $usr = $_REQUEST['usr'];
 //$usr = mysql_real_escape_string($usr);
 $pwd = $_REQUEST['pwd'];
 $ypwd = $pwd;
+check_param($usr);
+check_param($pwd);
 $conn = new mysqli(constant("sql_host"), constant("sql_usr"), constant("sql_pwd"), constant("sql_name"), constant("sql_port"));
 // var_dump($conn);
 if (!$conn->connect_error) {
