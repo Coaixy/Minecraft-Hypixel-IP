@@ -23,28 +23,6 @@ define('cmdd2', 'iptables -D INPUT -s [ip] -p tcp --dport 39253 -j ACCEPT && ser
 define('cmdd3', 'iptables -D INPUT -s [ip] -p tcp --dport 39254 -j ACCEPT && service iptables save');
 define('cmdd4', 'iptables -D INPUT -s [ip] -m limit --limit 160/sec -p tcp --dport 39253 -j ACCEPT && iptables -D INPUT -s [ip] -m limit --limit 160/sec -p tcp --dport 39254 -j ACCEPT && service iptables save');
 define('cmdd5', 'iptables -D INPUT -s [ip] -p tcp --dport 39253 -j ACCEPT && iptables -D INPUT -s [ip] -p tcp --dport 39254 -j ACCEPT && service iptables save');
-function sendCMD($level, $ip) {
-    //echo str_replace('[ip]', $ip,constant("cmd".$level));
-    if (!function_exists("ssh2_connect")) die("Error: SSH2 does not exist on you're server");
-    if (!($con = ssh2_connect(constant('host'), constant('port')))) {
-        echo "Error: Connection Issue";
-    } else {
-        if (!ssh2_auth_password($con, constant('usr'), constant('pwd'))) {
-            echo "Error: Login failed, one or more of you're server credentials are incorrect.";
-        } else {
-            if (!($stream = ssh2_exec($con, str_replace('[ip]', $ip, constant("cmd" . $level))))) {
-                echo "Error: You're server was not able to execute you're methods file and or its dependencies";
-            } else {
-                stream_set_blocking($stream, false);
-                $data = "";
-                while ($buf = fread($stream, 4096)) {
-                    $data.= $buf;
-                }
-                fclose($stream);
-            }
-        }
-    }
-}
 function sendCMDD($level, $ip) {
     //echo str_replace('[ip]', $ip,constant("cmd".$level));
     if (!function_exists("ssh2_connect")) die("Error: SSH2 does not exist on you're server");
