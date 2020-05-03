@@ -5,8 +5,8 @@ header("Content-Type:text/html;charset=utf-8");
 define("sql_host", "127.0.0.1"); //数据库地址
 define("sql_port", 3306); //数据库端口
 define("sql_name", "NetWave"); //数据库名
-define("sql_usr", "L3yit4Mn"); //数据库用户名
-define("sql_pwd", "hSS0XkaS"); //数据库密码
+define("sql_usr", ""); //数据库用户名
+define("sql_pwd", ""); //数据库密码
 define("salt", "nacl");
 //服务器信息
 define('host', '113.31.107.130');
