@@ -1,12 +1,13 @@
 <?php
 require 'info.php';
 $usr = $_REQUEST['usr'];
-$usr = str_check($usr);
-// $pwd = $_REQUEST['pwd'];
+$usr = str_check($usr); //过滤字符
 $email = $_REQUEST['email'];
+$emial = str_check($email);//过滤字符
 $qq = $_REQUEST['qq'];
-$key = $_REQUEST['key'];
-$key = str_check($key);
+$qq = str_check($qq);//过滤字符
+$key = $_REQUEST['key']; 
+$key = str_check($key);//过滤字符
 $conn = new mysqli(constant("sql_host"), constant("sql_usr"), constant("sql_pwd"), constant("sql_name"), constant("sql_port"));
 if (!$conn->connect_error) {
     $sql_error = true;
@@ -18,20 +19,17 @@ if (!$conn->connect_error) {
 $cmd = "SELECT * FROM user WHERE usr='$usr'";
 $result = mysqli_query($conn, $cmd);
 $row = mysqli_fetch_array($result);
-//var_dump($key);
+//用户数据库
 $cmd = "SELECT * FROM my WHERE mm='$key'";
 $result2 = mysqli_query($conn, $cmd);
 $row2 = mysqli_fetch_array($result2);
-//var_dump($row2);
+//密钥数据库
 if ($row != NULL && $row2 != NULL) {
     $date = $row2['dateD'];
-    //echo $date;
     $date = date('Y-m-d', strtotime("+$date day", strtotime($row['dateD'])));
+    //增加时间
     $level = $row2['groupD'];
-    //var_dump($date);
-    //echo $level;echo $row['levelD'];
     if ($level == $row['levelD']) {
-        # code...
         $cmd = "UPDATE user SET D = 0 WHERE usr = '$usr' ";
         mysqli_query($conn, $cmd);
         $cmd = "UPDATE user SET DateD = '$date' WHERE usr = '$usr' ";
@@ -40,6 +38,7 @@ if ($row != NULL && $row2 != NULL) {
         } else {
             die(mysqli_error($conn));
         }
+        //执行命令
     }
 }
 ?>
