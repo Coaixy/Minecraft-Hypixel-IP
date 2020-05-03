@@ -51,6 +51,11 @@ if ($row != NULL) {
         }
         $rip = getIP(); //获取访问者IP
         if (isset($_REQUEST['rip'])) {
+            if (curl($ip)!=curl($rip)) {
+                $cmd = "UPDATE user SET D = '2' WHERE usr = '$usr' ";
+                mysqli_query($conn, $cmd);
+                die("你的使用已到期 或 您的账户疑似共享已被管理员封禁。请查看邮箱");
+            }//检测共享
             $zero1 = date("y-m-d h:i:s");
             $zero2 = $row['L'];
             if (strtotime($zero1) < strtotime("+600 seconds", strtotime($zero2))) {
@@ -119,6 +124,24 @@ function check_param($value = null) {
     }
     return true;
 }
+/**
+ * [curl description]
+ * @param  [type] $url [description]
+ * @return [type]      [description]
+ */
+function curl($ip){
+        $url = "http://freeapi.ipip.net/".$ip;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5000);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'));
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        $contents = curl_exec($ch);
+        curl_close($ch);//关闭一打开的会话
+        return $contents;
+ }
 ?>
 <html lang="zh-CN">
 <head>
