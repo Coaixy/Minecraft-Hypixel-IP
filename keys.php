@@ -1,4 +1,7 @@
 <?php
+/**
+ * 密钥生成器  格式 *****/keys.php?key=【密码】&num=【数量】&level=【级别】&dqtime=【时长】
+ */
 require 'info.php';
 $key = $_REQUEST['key'];
 $num = $_REQUEST['num'];
