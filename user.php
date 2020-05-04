@@ -21,14 +21,14 @@ $cmd = "UPDATE user SET D = 1 WHERE `dateD` < now() AND D=0";//将过期的用�
 mysqli_query($conn, $cmd);
 $cmd1 = "SELECT * FROM user WHERE D=1";
 $result = mysqli_query($conn, $cmd1);
+//获取所有已到期的用户
 while ($row2 = mysqli_fetch_array($result)) {
-    echo $row2['levelD'] . $row2['ip'];
-    sendCMDD($row2['levelD'], getIP());
     sendCMDD($row2['levelD'], $row2['ip']);
     $usr = $row2['usr'];
     $cmd23 = "UPDATE user SET D = 2 WHERE usr = '$usr' ";
     mysqli_query($conn, $cmd23);
-}//向服务器发送删除命令
+    //切换为确认冻结
+}
 $cmd = "SELECT * FROM user WHERE usr='$usr'";
 $result = mysqli_query($conn, $cmd);
 if (!$result) {
@@ -36,7 +36,7 @@ if (!$result) {
 }
 $row = mysqli_fetch_array($result);
 if ($row != NULL) {
-    $pwd = md5(constant("salt") . $pwd);
+    $pwd = md5(constant("salt") . $pwd);//加盐
     if ($pwd == $row['pwd']) {
         $ip = $row['ip'];
         $group = $row['levelD'];
@@ -58,7 +58,7 @@ if ($row != NULL) {
             }//检测共享
             $zero1 = date("y-m-d h:i:s");
             $zero2 = $row['L'];
-            if (strtotime($zero1) < strtotime("+600 seconds", strtotime($zero2))) {
+            if (strtotime($zero1) < strtotime("+600 seconds", strtotime($zero2))) { //上次修改时间+10分钟是否大于当前时间
                 die("宝贝，你再等等，我们得冷却十分钟才能改一次哦~");
             } else {
                 $cmd = "UPDATE user SET L = '$zero1' WHERE usr = '$usr' ";
@@ -75,12 +75,13 @@ if ($row != NULL) {
                 $text = $h . "-" . $rip;
                 sendCMDD($group, $ip);
                 sendCMD($group, $rip);
+                //删掉曾经，写入修改后的
                 $a = 0;
                 foreach (explode("-", $h) as $var) {
                     if ($var == $rip) {
                         $a = 1;
                     }
-                }
+                }//判定是否存在过此历史IP的记录
                 if ($a == 0 || $ip == "" || $h == "") {
                     $cmd = "UPDATE user SET h = '$text' WHERE usr = '$usr' ";
                     mysqli_query($conn, $cmd);
