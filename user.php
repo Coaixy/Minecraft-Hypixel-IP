@@ -51,7 +51,7 @@ if ($row != NULL) {
         }
         $rip = getIP(); //获取访问者IP
         if (isset($_REQUEST['rip'])) {
-            if (curl($ip)!=curl($rip) && $ip != "") {
+            if (curl($ip)!=curl($rip) && $rip != "") {
                 $cmd = "UPDATE user SET D = '2' WHERE usr = '$usr' ";
                 mysqli_query($conn, $cmd);
                 die("你的使用已到期 或 您的账户疑似共享已被管理员封禁。请查看邮箱");
@@ -130,7 +130,7 @@ function check_param($value = null) {
  * @return [type]      [description]
  */
 function curl($ip){
-        $url = "http://freeapi.ipip.net/".$ip;
+        $url = "http://ip-api.com/json/".$ip;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5000);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -140,7 +140,8 @@ function curl($ip){
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         $contents = curl_exec($ch);
         curl_close($ch);//关闭一打开的会话
-        return $contents;
+        $data = json_decode($contents, true);
+        return $data['city'];
  }
 ?>
 <html lang="zh-CN">
