@@ -51,7 +51,7 @@ if ($row != NULL) {
         }
         $rip = getIP(); //获取访问者IP
         if (isset($_REQUEST['rip'])) {
-            if (curl($ip)!=curl($rip)) {
+            if (curl($ip)!=curl($rip) && $rip != "") {
                 $cmd = "UPDATE user SET D = '2' WHERE usr = '$usr' ";
                 mysqli_query($conn, $cmd);
                 die("你的使用已到期 或 您的账户疑似共享已被管理员封禁。请查看邮箱");
