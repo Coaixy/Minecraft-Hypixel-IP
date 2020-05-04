@@ -20,6 +20,8 @@ $row = mysqli_fetch_array($result);
 $cmd = "SELECT * FROM my WHERE mm='$key'";
 $result2 = mysqli_query($conn, $cmd);
 $row2 = mysqli_fetch_array($result2);
+//获取卡密和用户
+//用户不存在且卡密存在
 if ($row == NULL && $row2 != NULL) {
     $pwd = md5(constant("salt") . $pwd);
     $date = $row2['dateD'];
