@@ -112,20 +112,6 @@ function getIP() {
     return $ip;
 }
 /**
- * [check_param description]
- * @param  [type] $value [description]
- * @return [type]        [description]
- */
-function check_param($value = null) {
-    $str = 'select|insert|and|or|update|delete|\'|\/\*|\*|\.\.\/|\.\/|union|into|load_file|outfile';
-    if (!$value) {
-        exit('没有参数！');
-    } elseif (eregi($str, $value)) {
-        exit('参数非法！');
-    }
-    return true;
-}
-/**
  * [curl description]
  * @param  [type] $url [description]
  * @return [type]      [description]
