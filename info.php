@@ -8,9 +8,9 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 header("Content-Type:text/html;charset=utf-8");
 define("sql_host", "127.0.0.1"); //数据库地址
 define("sql_port", 3306); //数据库端口
-define("sql_name", ""); //数据库名
-define("sql_usr", ""); //数据库用户名
-define("sql_pwd", ""); //数据库密码
+define("sql_name", "ssh2_webadmin"); //数据库名
+define("sql_usr", "root"); //数据库用户名
+define("sql_pwd", "root"); //数据库密码
 define("salt", "nacl");
 //服务器信息
 define('host', '');
@@ -66,12 +66,7 @@ function sendCMDD($level, $ip) {
  * 过滤危险字符串
  */
 function str_check($value) {
-    if (!get_magic_quotes_gpc()) {
-        // 进行过滤
-        $value = addslashes($value);
-    }
-    $value = str_replace("_", "\_", $value);
-    $value = str_replace("%", "\%", $value);
+    $value = addslashes($value);
     return $value;
 }
 ?>
