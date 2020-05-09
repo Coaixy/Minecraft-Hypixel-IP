@@ -1,12 +1,12 @@
 <?php
 /**
- * 密钥生成器  格式 keys.php?key=【密码】&num=【数量】&level=【级别】&dqtime=【时长】
+ * 密钥生成器  格式 keys.php?key=【密码】&num=【数量】&level=【级别】&time=【时长】
 **/
 require 'info.php';
 $key = $_REQUEST['key'];
 $num = $_REQUEST['num'];
 $level = $_REQUEST['level'];
-$dqtime = $_REQUEST['dqtime'];
+$time = $_REQUEST['time'];
 if ($key != "NetWave.lmfuture.czy") {
     die();
 }
@@ -22,7 +22,7 @@ $time = time();
 //利用时间戳进行卡密生成
 for ($i = 0;$i < $num;$i++) {
     $my = md5($time . $i);
-    $cmd = "INSERT INTO my (mm,dateD,groupD) VALUES ('$my','$dqtime','$level')";
+    $cmd = "INSERT INTO my (mm,dateD,groupD) VALUES ('$my','$time','$level')";
     var_dump(mysqli_query($conn, $cmd));
     echo "$my";
 }
