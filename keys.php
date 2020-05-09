@@ -25,5 +25,6 @@ for ($i = 0;$i < $num;$i++) {
     $cmd = "INSERT INTO my (mm,dateD,groupD) VALUES ('$my','$time','$level')";
     var_dump(mysqli_query($conn, $cmd));
     echo "$my";
+    //输出卡密
 }
 ?>
