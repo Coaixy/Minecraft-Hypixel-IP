@@ -37,8 +37,29 @@ define('cmdd5', 'iptables -D INPUT -s [ip] -p tcp --dport 39253 -j ACCEPT && ipt
  * @return [type]        [description]
  * 根据等级执行命令
  */
+function sendCMD($level,$ip)
+{
+    if (!function_exists("ssh2_connect")) die("Error: SSH2 does not exist on you're server");
+    if(!($con = ssh2_connect(constant('host'), constant('port')))){
+        echo "Error: Connection Issue";
+    } else {
+        if(!ssh2_auth_password($con, constant('usr'), constant('pwd'))) {
+        echo "Error: Login failed, one or more of you're server credentials are incorrect.";
+        } else {
+            if (!($stream = ssh2_exec($con, str_replace('[ip]', $ip,constant("cmd".$level))))) {
+                echo "Error: You're server was not able to execute you're methods file and or its dependencies";
+            } else {    
+                stream_set_blocking($stream, false);
+                $data = "";
+                while ($buf = fread($stream,4096)) {
+                    $data .= $buf;
+                }
+                fclose($stream);
+            }
+        }
+    }
+}
 function sendCMDD($level, $ip) {
-    //echo str_replace('[ip]', $ip,constant("cmd".$level));
     if (!function_exists("ssh2_connect")) die("Error: SSH2 does not exist on you're server");
     if (!($con = ssh2_connect(constant('host'), constant('port')))) {
         echo "Error: Connection Issue";
